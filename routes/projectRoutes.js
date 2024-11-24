@@ -1,23 +1,19 @@
-const express = require('express');
-const ProjectController = require('../controllers/projectController');
+const express = require("express");
+const ProjectController = require("../controllers/projectController");
+const Project = require("../models/Project");
 const router = express.Router();
 
-// Create Project (POST)
-router.post('/project', ProjectController.createProject);
+router.post("/project", ProjectController.createProject);
 
-// Get All Projects (GET)
-router.get('/projects', ProjectController.getAllProjects);
+router.get("/projects", ProjectController.getAllProjects);
 
-// Get Project with Financial Records (GET)
-router.get('/project/:projectId', ProjectController.getProjectWithPayments);
+router.get("/project/:projectId", ProjectController.getProjectWithPayments);
 
-// Update Project (PUT)
-router.put('/project/:projectId', ProjectController.updateProject);
+router.put("/project/:projectId", ProjectController.updateProject);
 
-// Partial Update Project (PATCH)
-router.patch('/project/:projectId', ProjectController.partialUpdateProject);
+router.patch("/project/:projectId", ProjectController.partialUpdateProject);
 
-// Delete Project (DELETE)
-router.delete('/project/:projectId', ProjectController.deleteProject);
+router.delete("/project/:projectId", ProjectController.deleteProject);
 
+router.patch("/project/:projectId", ProjectController.partialUpdateProject);
 module.exports = router;

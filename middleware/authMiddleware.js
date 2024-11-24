@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid token" });
-    req.user = decoded; // Attach user info to the request
+    req.user = decoded;
     next();
   });
 };

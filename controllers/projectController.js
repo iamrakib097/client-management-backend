@@ -1,11 +1,21 @@
-// controllers/projectController.js
-const Project = require('../models/Project');
-const Payment = require('../models/Payment');
+const Project = require("../models/Project");
+const Payment = require("../models/Payment");
 
 // Create Project (POST)
 exports.createProject = async (req, res) => {
   try {
-    const { name, details, budget, sub_total, start_time, end_time, status, project_type, client_id, financialRecords } = req.body;
+    const {
+      name,
+      details,
+      budget,
+      sub_total,
+      start_time,
+      end_time,
+      status,
+      project_type,
+      client_id,
+      financialRecords,
+    } = req.body;
     const project = await Project.create({
       name,
       details,
@@ -16,7 +26,7 @@ exports.createProject = async (req, res) => {
       status,
       project_type,
       client_id,
-      financialRecords, // Store initial financial records
+      financialRecords,
     });
     res.status(201).json(project);
   } catch (err) {
@@ -41,15 +51,14 @@ exports.getProjectWithPayments = async (req, res) => {
     const project = await Project.findByPk(projectId, {
       include: {
         model: Payment,
-        as: 'payments',
+        as: "payments",
       },
     });
 
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
 
-    // Include payment details and financialRecords in response
     res.status(200).json(project);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -60,11 +69,22 @@ exports.getProjectWithPayments = async (req, res) => {
 exports.updateProject = async (req, res) => {
   try {
     const { projectId } = req.params;
-    const { name, details, budget, sub_total, start_time, end_time, status, project_type, client_id, financialRecords } = req.body;
+    const {
+      name,
+      details,
+      budget,
+      sub_total,
+      start_time,
+      end_time,
+      status,
+      project_type,
+      client_id,
+      financialRecords,
+    } = req.body;
 
     const project = await Project.findByPk(projectId);
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
 
     // Update project with new data
@@ -86,7 +106,6 @@ exports.updateProject = async (req, res) => {
   }
 };
 
-// Partial Update Project (PATCH)
 exports.partialUpdateProject = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -94,10 +113,9 @@ exports.partialUpdateProject = async (req, res) => {
 
     const project = await Project.findByPk(projectId);
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
 
-    // Update specific fields
     project.name = name || project.name;
     project.details = details || project.details;
     project.budget = budget || project.budget;
@@ -110,17 +128,40 @@ exports.partialUpdateProject = async (req, res) => {
   }
 };
 
-// Delete Project (DELETE)
 exports.deleteProject = async (req, res) => {
   try {
     const { projectId } = req.params;
     const project = await Project.findByPk(projectId);
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
 
     await project.destroy();
-    res.status(200).json({ message: 'Project deleted successfully' });
+    res.status(200).json({ message: "Project deleted successfully" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+exports.partialUpdateProject = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const updateData = req.body;
+
+    const project = await Project.findByPk(projectId);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    Object.keys(updateData).forEach((key) => {
+      if (project[key] !== undefined) {
+        project[key] = updateData[key];
+      }
+    });
+
+    await project.save();
+
+    res.status(200).json(project);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

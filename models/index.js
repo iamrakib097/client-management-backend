@@ -7,7 +7,6 @@ const Setting = require("./Setting");
 const ClientSetting = require("./ClientSetting");
 const ProjectSetting = require("./ProjectSetting");
 
-// Define associations
 Client.hasMany(Project, { foreignKey: "client_id" });
 Project.hasMany(Payment, { foreignKey: "project_id" });
 UserModel.belongsTo(Client, { foreignKey: "client_id" });

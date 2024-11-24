@@ -1,6 +1,5 @@
-const User = require('../models/User');
+const User = require("../models/User");
 
-// Create User
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -8,7 +7,7 @@ exports.createUser = async (req, res) => {
       name,
       email,
       password,
-      role: role || 'Client',
+      role: role || "Client",
     });
     res.status(201).json(user);
   } catch (err) {
@@ -16,7 +15,6 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// Get all Users
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.findAll();
@@ -26,12 +24,11 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-// Get User by ID
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json(user);
   } catch (err) {
@@ -39,12 +36,11 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// Update User
 exports.updateUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const { name, email, password, role } = req.body;
@@ -60,15 +56,14 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// Delete User
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
     await user.destroy();
-    res.status(200).json({ message: 'User deleted' });
+    res.status(200).json({ message: "User deleted" });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

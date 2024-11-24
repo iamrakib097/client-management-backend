@@ -16,11 +16,10 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend's URL
+    origin: "http://localhost:5173",
   })
 );
 
-// Routes
 app.use("/api", clientRoutes);
 app.use("/api", projectRoutes);
 app.use("/api", paymentRoutes);

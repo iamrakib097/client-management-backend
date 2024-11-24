@@ -1,19 +1,25 @@
-const Client = require('../models/Client');
-const User = require('../models/User');
+const Client = require("../models/Client");
+const User = require("../models/User");
 
-// Create Client
 exports.createClient = async (req, res) => {
   try {
     const { name, company, email, phone, address, password, status } = req.body;
 
-    const client = await Client.create({ name, company, email, phone, address, password, status });
+    const client = await Client.create({
+      name,
+      company,
+      email,
+      phone,
+      address,
+      password,
+      status,
+    });
 
-    // Create associated User for client
     await User.create({
       name,
       email,
       password,
-      role: 'Client',
+      role: "Client",
     });
 
     res.status(201).json(client);
@@ -22,7 +28,6 @@ exports.createClient = async (req, res) => {
   }
 };
 
-// Get all Clients
 exports.getClients = async (req, res) => {
   try {
     const clients = await Client.findAll();
@@ -32,12 +37,11 @@ exports.getClients = async (req, res) => {
   }
 };
 
-// Get Client by ID
 exports.getClientById = async (req, res) => {
   try {
     const client = await Client.findByPk(req.params.id);
     if (!client) {
-      return res.status(404).json({ message: 'Client not found' });
+      return res.status(404).json({ message: "Client not found" });
     }
     res.status(200).json(client);
   } catch (err) {
@@ -45,12 +49,11 @@ exports.getClientById = async (req, res) => {
   }
 };
 
-// Update Client
 exports.updateClient = async (req, res) => {
   try {
     const client = await Client.findByPk(req.params.id);
     if (!client) {
-      return res.status(404).json({ message: 'Client not found' });
+      return res.status(404).json({ message: "Client not found" });
     }
 
     const { name, company, email, phone, address, password, status } = req.body;
@@ -69,15 +72,14 @@ exports.updateClient = async (req, res) => {
   }
 };
 
-// Delete Client
 exports.deleteClient = async (req, res) => {
   try {
     const client = await Client.findByPk(req.params.id);
     if (!client) {
-      return res.status(404).json({ message: 'Client not found' });
+      return res.status(404).json({ message: "Client not found" });
     }
     await client.destroy();
-    res.status(200).json({ message: 'Client deleted' });
+    res.status(200).json({ message: "Client deleted" });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
